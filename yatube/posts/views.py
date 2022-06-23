@@ -1,9 +1,10 @@
 """Functions to to return the response."""
 from django.core.paginator import Paginator
-from django.shortcuts import get_object_or_404, render, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from .models import Group, Post, User
 from .forms import PostForm
+
 
 def index(request):
     """Function sorts the data and sends it to the template."""
@@ -66,6 +67,7 @@ def post_detail(request, post_id):
     }
     return render(request, 'posts/post_detail.html', context)
 
+
 @login_required
 def post_create(request):
 
@@ -86,9 +88,6 @@ def post_create(request):
 @login_required
 def post_edit(request, post_id):
     post = get_object_or_404(Post, id=post_id)
-    #if request.user != post.author:
-        #return redirect('posts/post_detail.html', post_id=post_id)
-
     if request.user == post.author:
         if request.method == "POST":
             form = PostForm(request.POST, instance=post)
@@ -96,21 +95,19 @@ def post_edit(request, post_id):
                 form.save()
                 return redirect('posts:post_detail', post_id=post_id)
             else:
-                return render (
+                return render(
                     request,
                     'posts/create_post.html',
                     {'form': form,
                     'is_edit': True,
-                    'post': post
-                    }
+                    'post': post}
                 )
         else:
             form = PostForm(instance=post)
             context = {'form': form,
                     'is_edit': True,
                     'post': post
-                    }
+                }
         return render(request, 'posts/create_post.html', context)
     else:
         return redirect('posts:post_detail', post_id=post_id)
-        

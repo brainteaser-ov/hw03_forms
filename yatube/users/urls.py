@@ -16,19 +16,23 @@ app_name = 'users'
 
 urlpatterns = [
 
-    path('reset/<uidb64>/<token>/',
+    path(
+      'reset/<uidb64>/<token>/', 
       PasswordResetConfirmView.as_view(
-      template_name='users/password_reset_confirm.html',
-      success_url=reverse_lazy('users:password_reset_complete')
+          template_name='users/password_reset_confirm.html',
+          success_url=reverse_lazy('users:password_reset_complete')
       ),
       name='password_reset_confirm'
     ),
     path(
-      'logout/', LogoutView.as_view(
-      template_name='users/logged_out.html'),
+      'logout/', 
+      LogoutView.as_view(
+          template_name='users/logged_out.html'),
       name='logout'
     ),
-    path('signup/', views.SignUp.as_view(), name='signup'),
+    path(
+      'signup/', 
+      views.SignUp.as_view(), name='signup'),
     path(
       'login/',
       LoginView.as_view(template_name='users/login.html'),
@@ -37,21 +41,21 @@ urlpatterns = [
     path(
       'password_reset/',
       PasswordResetView.as_view(
-      template_name='users/password_reset_form.html',
-      success_url = reverse_lazy('users:password_reset_done')),
+          template_name='users/password_reset_form.html',
+          success_url = reverse_lazy('users:password_reset_done')),
       name='password_reset_form'
     ),
     path(
       'password_reset/done/',
       PasswordResetDoneView.as_view(
-      template_name='users/password_reset_done.html'
+          template_name='users/password_reset_done.html'
       ),
       name='password_reset_done'
     ),
 
     path('reset/done/',
       PasswordResetCompleteView.as_view(
-      template_name='users/password_reset_complete.html'),
+          template_name='users/password_reset_complete.html'),
       name='password_reset_complete'
     ),
 
@@ -59,7 +63,7 @@ urlpatterns = [
         'password_change/done/',
         PasswordChangeDoneView.as_view(
             template_name='users/password_change_done.html'),
-        name='password_change_done'
+      name='password_change_done'
     ),
     path(
         'password_change/',
