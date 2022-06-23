@@ -98,16 +98,19 @@ def post_edit(request, post_id):
                 return render(
                     request,
                     'posts/create_post.html',
-                    {'form': form,
+                    {
+                    'form': form,
                     'is_edit': True,
-                    'post': post}
+                    'post': post
+                    }
                 )
         else:
             form = PostForm(instance=post)
-            context = {'form': form,
-                    'is_edit': True,
-                    'post': post
-                }
+            context = {
+                'form': form,
+                'is_edit': True,
+                'post': post
+            }
         return render(request, 'posts/create_post.html', context)
     else:
         return redirect('posts:post_detail', post_id=post_id)
