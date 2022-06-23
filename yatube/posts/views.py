@@ -99,9 +99,9 @@ def post_edit(request, post_id):
                     request,
                     'posts/create_post.html',
                     {
-                     'form': form,
-                     'is_edit': True,
-                     'post': post
+                    'form': form,
+                    'is_edit': True,
+                    'post': post
                     }
                 )
         else:
