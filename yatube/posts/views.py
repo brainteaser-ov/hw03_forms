@@ -36,7 +36,7 @@ def group_posts(request, slug):
     }
     return render(request, 'posts/group_list.html', context)
 
-@login_required
+
 def profile(request, username):
     author = User.objects.get(username=username)
     post_list = Post.objects.filter(author=author).order_by("-pub_date").all()
@@ -49,7 +49,7 @@ def profile(request, username):
     }
     return render(request, 'posts/profile.html', context)
 
-@login_required
+
 def post_detail(request, post_id):
     post = Post.objects.get(id=post_id)
     author_id = post.author_id
@@ -68,16 +68,18 @@ def post_detail(request, post_id):
 
 @login_required
 def post_create(request):
-    form = PostForm(request.POST)
+
     if request.method == "POST":
+        form = PostForm(request.POST or None)
         if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.save()
-            return redirect('posts:profile', request.user.username)
+            new_post = form.save(commit=False)
+            new_post.author = request.user
+            new_post.save()
+            return redirect('posts:profile', username=request.user)
         else:
-            return redirect('posts:profile', request.user.username)
+            return render(request, 'posts/create_post.html', {'form': form})
     else:
+        form = PostForm()
         return render(request, 'posts/create_post.html', {'form': form})
 
 
@@ -92,7 +94,7 @@ def post_edit(request, post_id):
             form = PostForm(request.POST, instance=post)
             if form.is_valid():
                 form.save()
-                return redirect('posts/post_detail.html', post_id=post_id)
+                return redirect('posts:post_detail', post_id=post_id)
             else:
                 return render (
                     request,
@@ -110,5 +112,5 @@ def post_edit(request, post_id):
                     }
         return render(request, 'posts/create_post.html', context)
     else:
-        return redirect('posts/post_detail.html', post_id=post_id)
+        return redirect('posts:post_detail', post_id=post_id)
         

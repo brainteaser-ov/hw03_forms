@@ -13,10 +13,10 @@
       <div class="col-md-8 p-5">
         <div class="card">
           <div class="card-header">       
-            {% if is_edit %}
-    Редактировать запись
+            {% if not is_edit %}
+     Добавить запись
             {% else %}
-    Добавить запись
+            Редактировать запись
            {% endif %}                   
       </div>
       <div class="card-body"> 
@@ -27,22 +27,16 @@
                              {% endif %}">
 {% csrf_token %}
 {% for field in form %} 
-{% if form.errors %} 
-            {% for field in form %}
-              {% for error in field.errors %}            
-                <div class="alert alert-danger">
-                  {{ error|escape }}
-                </div>
-              {% endfor %}
-            {% endfor %}
-          {% endif %}
-   <div class="form-group row my-3">
-      <label for="{{ field.id_for_label }}">
+<div class="form-group">
+  {% if field.errors %}
+  <div class="alert.alert.danger">
+    {{ field.errors }}
+  </div>
+  {% endif %}
          {{ field.label }}
             {% if field.field.required %}
                <span class="required text-danger">*</span>
                   {% endif %}
-      </label>
 {{ field|addclass:'form-control' }} 
    {% if field.help_text %}
      <small  id="{{ field.id_for_label }}-help" class="form-text text-muted">
@@ -51,7 +45,7 @@
      {% endif %}
    </div>
      {% endfor %}
-     <div class="col-md-6 offset-md-4">
+     <div class="d-flex justify-content-end">
       <button type="submit" class="btn btn-primary">
          {% if is_edit %}
             Сохранить
