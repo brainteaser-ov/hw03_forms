@@ -52,7 +52,6 @@ def profile(request, username):
 
 def post_detail(request, post_id):
     post = Post.objects.get(id=post_id)
-    author_id = post.author_id
     context = {
         'post_id': post_id,
         'post': post,
@@ -85,14 +84,14 @@ def post_edit(request, post_id):
             form.save()
             return redirect('posts:post_detail', post_id=post_id)
         return render(
-                request,
-                'posts/create_post.html',
-                {'form': form, 'is_edit': True, 'post': post}
+            request,
+            'posts/create_post.html',
+            {'form': form, 'is_edit': True, 'post': post}
         )
     form = PostForm(instance=post)
     context = {
-            'form': form,
-            'is_edit': True,
-            'post': post
+        'form': form,
+        'is_edit': True,
+        'post': post
         }
     return render(request, 'posts/create_post.html', context)
