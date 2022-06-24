@@ -1,54 +1,52 @@
 {% extends 'base.html' %}  
-    {% block title %} {{ title}} {% endblock %}
-   
-  </head>
-  <body>       
-    <main>
-      <div class="row">
+    {% block title %} {{ post.text|truncatewords:10 }} {% endblock %}
         {% block content %}
-        <aside class="col-12 col-md-3">
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">
+        <div class="row">
+          <aside class="col-12 col-md-3">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
               Дата публикации: {{ post.pub_date|date:"d E Y" }}
             </li>
+            <li class="list-group-item">
             {% if post.group %}  
-             
-              <li class="list-group-item">
               <p>  Группа:  {{ post.group }} </p>
              <a href="{% url 'posts:group_list' post.group.slug %}">все записи группы 
               {% endif %}
-             </a>
-              </li>
-              
+            </a>
+          </li>    
               <li class="list-group-item">
-                Автор: {{ author.get_full_name }}
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-              Всего постов автора:  {{author.posts.count}}
+                Автор: {{ post.author.get_full_name }} <a href="{% url 'posts:profile' post.author %}">
+                  {{ post.author.username }}</a>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+              Всего постов автора:  {{ post.author.posts.count }}
             </li>
             <li class="list-group-item">
               {% if post.group %}
                 <a href="{% url 'posts:profile' post.author %}">
                     все посты пользователя
                     {% endif %}
-              </a>
-            </li>
-          </ul>
-        </aside>
-        <article class="col-12 col-md-9">
-          <p>
+                  </a>
+                </li>
+              </ul>
+            </aside>
+            <article class="col-12 col-md-9">
+            <p>
             {{post.text}}
           </p>
         </article>
         {% if request.user == post.author %}
-        <div class="d-flex justify-content-end">
-          <a href="{% url 'posts:post_edit' post_id %}">
-            <button type="submit" class="btn btn-primary" value="Submit">
-              Редактировать
-            </button>
+        <article class="col-12 col-md-9">
+          <div class="d-flex justify-content-end">
+            <a href="{% url 'posts:post_edit' post_id %}">
+              <button type="submit" class="btn btn-primary" value="Submit">
+                Редактировать запись
+              </button>
+  
+            </article>
+          </div>     
+        </div>
             {% endif %}
     </div> 
       {% endblock %}
-    </main>
-  </body>
-</html> 
+    

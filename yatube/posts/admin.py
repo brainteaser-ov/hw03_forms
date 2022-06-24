@@ -1,5 +1,6 @@
 """Models to manage the admin's account."""
 from django.contrib import admin
+
 from .models import Group, Post
 
 
