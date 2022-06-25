@@ -38,7 +38,7 @@ def group_posts(request, slug):
 
 def profile(request, username):
     author = get_object_or_404(User, username=username)
-    post = Post.objects.prefetch_related('author').all()
+    post = Post.objects.filter(author=author)
     page_obj = p_paginator(post, request)
     context = {
         'author': author,
