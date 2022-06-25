@@ -11,8 +11,8 @@
             {% if post.group %}  
               <p>  Группа:  {{ post.group }} </p>
              <a href="{% url 'posts:group_list' post.group.slug %}">все записи группы 
-              {% endif %}
-            </a>
+            {% endif %}
+          </a>
           </li>    
               <li class="list-group-item">
                 Автор: {{ post.author.get_full_name }} <a href="{% url 'posts:profile' post.author %}">
@@ -38,7 +38,7 @@
         {% if request.user == post.author %}
         <article class="col-12 col-md-9">
           <div class="d-flex justify-content-end">
-            <a href="{% url 'posts:post_edit' post_id %}">
+            <a href="{% url 'posts:post_edit' post.id %}">
               <button type="submit" class="btn btn-primary" value="Submit">
                 Редактировать запись
               </button>
