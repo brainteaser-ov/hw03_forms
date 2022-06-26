@@ -63,7 +63,6 @@ def post_create(request):
         new_post.author = request.user
         new_post.save()
         return redirect('posts:profile', username=request.user)
-        #return render(request, 'posts/create_post.html', {'form': form})
     return render(request, 'posts/create_post.html', {'form': form})
 
 
