@@ -9,7 +9,7 @@
             </li>
             <li class="list-group-item">
             {% if post.group %}  
-              <p>  Группа:  {{ post.group }} </p>
+                Группа:  {{ post.group }} <br>
              <a href="{% url 'posts:group_list' post.group.slug %}">все записи группы 
             {% endif %}
           </a>
@@ -31,20 +31,15 @@
               </ul>
             </aside>
             <article class="col-12 col-md-9">
-            <p>
+              <p>
             {{post.text}}
           </p>
-        </article>
         {% if request.user == post.author %}
-        <article class="col-12 col-md-9">
-          <div class="d-flex justify-content-end">
-            <a href="{% url 'posts:post_edit' post.id %}">
-              <button type="submit" class="btn btn-primary" value="Submit">
+        <a class="btn btn-primary" href="{% url 'posts:post_edit' post.id %}">
                 Редактировать запись
-              </button>
-  
+              </a>                
             </article>
-          </div>     
+          </div> 
         </div>
             {% endif %}
     </div> 

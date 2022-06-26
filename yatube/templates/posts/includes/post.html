@@ -3,8 +3,8 @@
     <ul>
       <li>
      Автор:
-     <a href="{% url 'posts:profile' post.author.pk %}">  {{ post.author.get_full_name }} </a> <br>
-     <a href="{% url 'posts:profile' post.author.pk %}"> все посты пользователя </a>
+     <a href="{% url 'posts:profile' post.author.username %}">  {{ post.author.get_full_name }} </a> <br>
+     <a href="{% url 'posts:profile' post.author.username %}"> все посты пользователя </a>
       </li>
        <li>
      Дата публикации: {{ post.pub_date|date:"d E Y" }}
@@ -13,7 +13,7 @@
   <p> {{ post.text|truncatewords:25 }} </p>
 <a href="{% url 'posts:post_detail' post.pk %}">подробная информация</a>
 {% if post.group %}  
-              <p>  Группа:  {{ post.group }} </p>
+               Группа:  {{ post.group }} <br>
              <a href="{% url 'posts:group_list' post.group.slug %}">все записи группы 
             {% endif %}
           </a>

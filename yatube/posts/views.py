@@ -16,7 +16,7 @@ def p_paginator(post, request):
 
 def index(request):
     """Function sorts the data and sends it to the template."""
-    post = Post.objects.all().order_by('-pub_date')
+    post = Post.objects.all()
     page_obj = p_paginator(post, request)
     context = {
         'page_obj': page_obj,
@@ -38,7 +38,7 @@ def group_posts(request, slug):
 
 def profile(request, username):
     author = get_object_or_404(User, username=username)
-    post = Post.objects.filter(author=author)
+    post = author.posts.all()
     page_obj = p_paginator(post, request)
     context = {
         'author': author,
@@ -49,9 +49,7 @@ def profile(request, username):
 
 def post_detail(request, post_id):
     post = get_object_or_404(Post, id=post_id)
-    author = post.author
     context = {
-        'author': author,
         'post': post,
     }
     return render(request, 'posts/post_detail.html', context)
@@ -60,13 +58,12 @@ def post_detail(request, post_id):
 @login_required
 def post_create(request):
     form = PostForm(request.POST or None)
-    if request.method == "POST":
-        if form.is_valid():
-            new_post = form.save(commit=False)
-            new_post.author = request.user
-            new_post.save()
-            return redirect('posts:profile', username=request.user)
-        return render(request, 'posts/create_post.html', {'form': form})
+    if request.method == "POST" and form.is_valid():
+        new_post = form.save(commit=False)
+        new_post.author = request.user
+        new_post.save()
+        return redirect('posts:profile', username=request.user)
+        #return render(request, 'posts/create_post.html', {'form': form})
     return render(request, 'posts/create_post.html', {'form': form})
 
 
@@ -79,11 +76,10 @@ def post_edit(request, post_id):
     if form.is_valid():
         form.save()
         return redirect('posts:post_detail', post_id=post_id)
-    else:
-        form = PostForm(instance=post)
-        context = {
-            'form': form,
-            'is_edit': True,
-            'post': post,
-        }
-        return render(request, 'posts/create_post.html', context)
+    form = PostForm(instance=post)
+    context = {
+        'form': form,
+        'is_edit': True,
+        'post': post,
+    }
+    return render(request, 'posts/create_post.html', context)
